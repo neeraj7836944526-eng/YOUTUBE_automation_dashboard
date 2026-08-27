@@ -3,81 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>YouTube Automation Dashboard</title>
-
 <style>
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
-
+*{box-sizing:border-box;margin:0;padding:0}
 body{
     font-family:Arial,sans-serif;
     background:#0b0f19;
     color:white;
 }
-
 header{
-    background:#
-
-header h1{
-    font-size:22px;
+    background:#111827;
+    padding:20px;
+    border-bottom:1px solid #263044;
 }
-
-header p{
-    color:#9ca3af;
-    margin-top:6px;
-    font-size:13px;
-}
-
+header h1{font-size:22px}
+header p{color:#9ca3af;margin-top:6px;font-size:13px}
 .container{
     max-width:1100px;
     margin:auto;
     padding:20px;
 }
-
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px;
+}
+.connect{
+    background:#ef4444;
+    color:white;
+    border:0;
+    padding:12px 18px;
+    border-radius:9px;
+    font-weight:bold;
+    cursor:pointer;
+}
 .cards{
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:15px;
     margin-bottom:20px;
 }
-
-.card{
+.card,.panel{
     background:#111827;
     border:1px solid #263044;
     border-radius:14px;
     padding:18px;
 }
-
-.card small{
-    color:#9ca3af;
-}
-
-.card h2{
-    margin-top:8px;
-}
-
+.card small{color:#9ca3af}
+.card h2{margin-top:8px}
 .grid{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:20px;
 }
-
 .panel{
-    background:#111827;
-    border:1px solid #263044;
-    border-radius:14px;
-    padding:20px;
     margin-bottom:20px;
 }
-
-.panel h3{
-    margin-bottom:15px;
-}
-
+.panel h3{margin-bottom:15px}
 .idea{
     padding:13px;
     border:1px solid #263044;
@@ -85,12 +69,8 @@ header p{
     margin-bottom:10px;
     cursor:pointer;
 }
-
-.idea:hover{
-    background:#182033;
-}
-
-input,select,textarea{
+.idea:hover{background:#182033}
+input,select{
     width:100%;
     padding:12px;
     margin-bottom:12px;
@@ -99,11 +79,6 @@ input,select,textarea{
     background:#0b0f19;
     color:white;
 }
-
-textarea{
-    min-height:130px;
-}
-
 button{
     padding:12px 17px;
     border:0;
@@ -113,487 +88,292 @@ button{
     font-weight:bold;
     cursor:pointer;
 }
-
-button:hover{
-    opacity:.85;
-}
-
 .script{
     margin-top:18px;
     white-space:pre-wrap;
     line-height:1.6;
     color:#d1d5db;
 }
-
 .queue{
     display:flex;
     justify-content:space-between;
-    align-items:center;
     padding:14px 0;
     border-bottom:1px solid #263044;
 }
-
 .status{
     font-size:12px;
     padding:6px 10px;
     border-radius:20px;
     background:#374151;
 }
-
-.success{
-    background:#166534;
+.success{background:#166534}
+.pending{background:#92400e}
+.message{
+    margin-top:15px;
+    color:#9ca3af;
+    line-height:1.5;
 }
-
-.pending{
-    background:#92400e;
-}
-
 .progress{
     height:15px;
     background:#263044;
     border-radius:10px;
     overflow:hidden;
 }
-
 .progress-bar{
     width:72%;
     height:100%;
     background:#ef4444;
 }
-
 @media(max-width:800px){
-
-    .cards{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .grid{
-        grid-template-columns:1fr;
-    }
+    .cards{grid-template-columns:1fr 1fr}
+    .grid{grid-template-columns:1fr}
+    .top{align-items:flex-start;flex-direction:column}
 }
-
 @media(max-width:500px){
-
-    .cards{
-        grid-template-columns:1fr;
-    }
-
-    .container{
-        padding:12px;
-    }
+    .cards{grid-template-columns:1fr}
+    .container{padding:12px}
 }
 </style>
+<!-- Google Identity Services -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
-
 <body>
-
 <header>
-
 <h1>🚀 YouTube Automation Dashboard</h1>
-
-<p>
-Manage video ideas, scripts, upload queue and analytics
-</p>
-
+<p>Manage your YouTube channel from one dashboard</p>
 </header>
-
-
 <div class="container">
-
-
-<!-- STATISTICS -->
-
+<div class="top">
+<div>
+<h2>Dashboard</h2>
+<p style="color:#9ca3af;margin-top:5px">
+Connect your YouTube channel to continue
+</p>
+</div>
+<button class="connect" onclick="connectYouTube()">
+▶ Connect YouTube
+</button>
+</div>
 <div class="cards">
-
 <div class="card">
 <small>Subscribers</small>
-<h2 id="subscribers">12,480</h2>
+<h2 id="subscribers">—</h2>
 </div>
-
 <div class="card">
 <small>Total Views</small>
-<h2>1.28M</h2>
+<h2 id="views">—</h2>
 </div>
-
 <div class="card">
-<small>Total Videos</small>
-<h2 id="videoCount">86</h2>
+<small>Videos</small>
+<h2 id="videos">—</h2>
 </div>
-
 <div class="card">
-<small>Estimated Revenue</small>
-<h2>₹24,680</h2>
+<small>Channel</small>
+<h2 id="channelName">Not Connected</h2>
 </div>
-
 </div>
-
-
-
-<!-- MAIN GRID -->
-
 <div class="grid">
-
-
-<!-- VIDEO IDEAS -->
-
 <div class="panel">
-
 <h3>💡 Video Ideas</h3>
-
-
 <div class="idea" onclick="selectIdea(this)">
 10 AI Tools That Can Save You Hours Every Day
 </div>
-
-
 <div class="idea" onclick="selectIdea(this)">
 7 Online Businesses You Can Start With ₹5,000
 </div>
-
-
 <div class="idea" onclick="selectIdea(this)">
 5 Secrets Successful YouTubers Don't Tell You
 </div>
-
-
 <div class="idea" onclick="selectIdea(this)">
 How AI Is Changing Online Business
 </div>
-
-
-<input
-id="customIdea"
-placeholder="Enter your own video idea"
->
-
-
-<button onclick="addIdea()">
-+ Add Idea
-</button>
-
+<input id="customIdea" placeholder="Enter your own video idea">
+<button onclick="addIdea()">+ Add Idea</button>
 </div>
-
-
-
-<!-- SCRIPT GENERATOR -->
-
 <div class="panel">
-
 <h3>✍️ Script Generator</h3>
-
-
-<input
-id="videoTitle"
-placeholder="Enter video title"
->
-
-
+<input id="videoTitle" placeholder="Enter video title">
 <select id="videoStyle">
-
 <option>Informative</option>
-
 <option>Storytelling</option>
-
 <option>Fast & Viral</option>
-
 <option>Professional</option>
-
 </select>
-
-
 <button onclick="generateScript()">
 Generate Script
 </button>
-
-
-<div
-id="scriptOutput"
-class="script"
->
+<div id="scriptOutput" class="script">
 Your generated script will appear here...
 </div>
-
 </div>
-
 </div>
-
-
-
-<!-- UPLOAD QUEUE -->
-
 <div class="panel">
-
 <h3>📤 Upload Queue</h3>
-
-
 <div class="queue">
-
-<span>
-AI Tools That Can Save You Hours
-</span>
-
-<span class="status pending">
-Processing
-</span>
-
+<span>AI Tools Video</span>
+<span class="status pending">Processing</span>
 </div>
-
-
 <div class="queue">
-
-<span>
-Online Businesses With ₹5,000
-</span>
-
-<span class="status success">
-Scheduled
-</span>
-
+<span>Online Business Video</span>
+<span class="status success">Scheduled</span>
 </div>
-
-
 <div class="queue">
-
-<span>
-YouTube Growth Secrets
-</span>
-
-<span class="status">
-Draft
-</span>
-
+<span>YouTube Growth Secrets</span>
+<span class="status">Draft</span>
 </div>
-
 </div>
-
-
-
-<!-- ANALYTICS -->
-
 <div class="panel">
-
 <h3>📊 Channel Analytics</h3>
-
 <p style="color:#9ca3af;margin-bottom:10px">
 Monthly target progress
 </p>
-
-
 <div class="progress">
-
 <div class="progress-bar"></div>
-
 </div>
-
-
 <p style="margin-top:10px">
-72% of monthly target completed
+72% completed
 </p>
-
 </div>
-
-
-
-<!-- AUTOMATION -->
-
 <div class="panel">
-
-<h3>⚙️ Automation Settings</h3>
-
-
-<select id="uploadFrequency">
-
-<option>1 video per day</option>
-
-<option>3 videos per day</option>
-
-<option>5 videos per day</option>
-
-<option>10 videos per day</option>
-
-</select>
-
-
-<button onclick="saveAutomation()">
-Save Automation Settings
-</button>
-
-
-<p
-id="automationMessage"
-style="margin-top:15px;color:#9ca3af"
-></p>
-
+<h3>🔐 YouTube Connection</h3>
+<div id="connectionMessage" class="message">
+YouTube channel is not connected.
 </div>
-
-
 </div>
-
-
-
+</div>
 <script>
-
-
-/* SELECT IDEA */
-
+/*
+==================================================
+IMPORTANT
+==================================================
+Replace the value below with your OAuth 2.0
+CLIENT ID from Google Cloud.
+Do NOT put Client Secret here.
+==================================================
+*/
+const CLIENT_ID = "PASTE_YOUR_CLIENT_ID_HERE";
+let accessToken = null;
+/* CONNECT YOUTUBE */
+function connectYouTube(){
+    if(CLIENT_ID === "PASTE_YOUR_CLIENT_ID_HERE"){
+        alert(
+            "First replace PASTE_YOUR_CLIENT_ID_HERE with your Google OAuth Client ID."
+        );
+        return;
+    }
+    const client = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope:
+        "https://www.googleapis.com/auth/youtube.readonly",
+        callback: async (response) => {
+            if(response.error){
+                document.getElementById("connectionMessage").innerText =
+                "YouTube connection failed.";
+                return;
+            }
+            accessToken = response.access_token;
+            document.getElementById("connectionMessage").innerText =
+            "✅ YouTube channel connected successfully.";
+            await loadChannelData();
+        }
+    });
+    client.requestAccessToken();
+}
+/* LOAD CHANNEL DATA */
+async function loadChannelData(){
+    try{
+        const response = await fetch(
+            "https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&mine=true",
+            {
+                headers:{
+                    Authorization:"Bearer " + accessToken
+                }
+            }
+        );
+        const data = await response.json();
+        if(!data.items || !data.items.length){
+            document.getElementById("connectionMessage").innerText =
+            "No YouTube channel was found.";
+            return;
+        }
+        const channel = data.items[0];
+        const stats = channel.statistics;
+        document.getElementById("channelName").innerText =
+        channel.snippet.title;
+        document.getElementById("subscribers").innerText =
+        Number(stats.subscriberCount).toLocaleString();
+        document.getElementById("views").innerText =
+        Number(stats.viewCount).toLocaleString();
+        document.getElementById("videos").innerText =
+        Number(stats.videoCount).toLocaleString();
+    }
+    catch(error){
+        console.error(error);
+        document.getElementById("connectionMessage").innerText =
+        "Could not load YouTube channel data.";
+    }
+}
+/* VIDEO IDEA */
 function selectIdea(element){
-
-document.getElementById("videoTitle").value =
-element.innerText.trim();
-
+    document.getElementById("videoTitle").value =
+    element.innerText.trim();
 }
-
-
-
 /* ADD IDEA */
-
 function addIdea(){
-
-const input =
-document.getElementById("customIdea");
-
-const value =
-input.value.trim();
-
-
-if(value === ""){
-
-alert("Please enter a video idea.");
-
-return;
-
+    const input =
+    document.getElementById("customIdea");
+    const value =
+    input.value.trim();
+    if(!value){
+        alert("Please enter a video idea.");
+        return;
+    }
+    const idea =
+    document.createElement("div");
+    idea.className="idea";
+    idea.innerText=value;
+    idea.onclick=function(){
+        selectIdea(idea);
+    };
+    input.parentNode.insertBefore(
+        idea,
+        input
+    );
+    input.value="";
 }
-
-
-const newIdea =
-document.createElement("div");
-
-newIdea.className = "idea";
-
-newIdea.innerText = value;
-
-
-newIdea.onclick = function(){
-
-selectIdea(newIdea);
-
-};
-
-
-input.parentNode.insertBefore(
-newIdea,
-input
-);
-
-
-input.value = "";
-
-}
-
-
-
 /* SCRIPT GENERATOR */
-
 function generateScript(){
-
-const title =
-document.getElementById("videoTitle").value.trim();
-
-
-const style =
-document.getElementById("videoStyle").value;
-
-
-if(title === ""){
-
-alert("Please enter a video title.");
-
-return;
-
-}
-
-
-const script =
-
+    const title =
+    document.getElementById("videoTitle").value.trim();
+    const style =
+    document.getElementById("videoStyle").value;
+    if(!title){
+        alert("Please enter a video title.");
+        return;
+    }
+    const script =
 `🎬 VIDEO TITLE
-
 ${title}
-
-
-🎯 VIDEO STYLE
-
+🎯 STYLE
 ${style}
-
-
 🎙️ HOOK
-
 Did you know that ${title.toLowerCase()} could completely change the way you think about this topic?
-
-
 🎬 INTRODUCTION
-
 Welcome back to the channel.
-
-Today we are going to explore ${title.toLowerCase()} and explain the most important things you need to know.
-
-
+Today we are exploring ${title.toLowerCase()} and the most important things you need to know.
 🔥 MAIN CONTENT
-
 1. THE BIG IDEA
-
-Let's first understand why this topic matters and why so many people are paying attention to it.
-
-
+Let's understand why this topic matters.
 2. IMPORTANT DETAILS
-
-There are several important points you should know before getting started.
-
-Understanding these points can help you make smarter decisions.
-
-
+Here are the key points you should know before getting started.
 3. THE OPPORTUNITY
-
-If you use this information correctly, there can be opportunities to learn, grow and build something valuable.
-
-
+Use this information to learn, grow and build something valuable.
 📌 CONCLUSION
-
-So that's everything you need to know about ${title.toLowerCase()}.
-
-If you found this video useful, make sure to subscribe to the channel and turn on notifications for more videos.
-
-
-🚀 CALL TO ACTION
-
-Like this video, share it with your friends and subscribe for more.
-
-
-See you in the next video!`;
-
-
-
-document.getElementById("scriptOutput").innerText =
-script;
-
+That's everything you need to know about ${title.toLowerCase()}.
+Subscribe for more videos. 🚀`;
+    document.getElementById("scriptOutput").innerText =
+    script;
 }
-
-
-
-/* AUTOMATION */
-
-function saveAutomation(){
-
-const frequency =
-document.getElementById("uploadFrequency").value;
-
-
-document.getElementById("automationMessage").innerText =
-"Automation setting saved: " + frequency;
-
-}
-
 </script>
-
-
 </body>
 </html>
